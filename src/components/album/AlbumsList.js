@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -6,6 +6,8 @@ import Snackbar from '@mui/material/Snackbar';
 import AlbumGrid from './AlbumGrid';
 import OrderSidebar from '../OrderSidebar';
 import axiosInstance from '../../apis/axiosClient';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 import {
   Container,
@@ -22,41 +24,50 @@ import {
 
 const AlbumsList = () => {
   const [albums, setAlbums] = useState([]); // for albums
-  const [limit, setLimit] = useState(1); // for pagination
+  const limit = 12; // for pagination
   const [searchType, setSearchType] = useState('albumName'); //default value for select input
   const [searchTerm, setSearchTerm] = useState(''); // for search input filed value
   const [message, setMessage] = useState(''); // for not found message
   const [errorMessage, setErrorMessage] = useState(''); // for error message
   const [wishListId, setWishListId] = useState();
+  const [currentPage, setCurrentPage] = useState(1); // Track current page
 
   //make an API call with search values to backend and return the result
-  const fetchAlbums = async (searchType, searchTerm, limit) => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_PATH}/albums/filter`,
-        {
-          params: {
-            limit,
-            [searchType]: searchTerm,
-          },
-        }
-      );
-      const searchResult = response.data.albums;
-      setAlbums(searchResult);
-      if (searchResult.length === 0) {
-        setMessage('No result found');
-      }
-    } catch (error) {
-      console.error('Error fetching albums:', error);
-      setErrorMessage(error.message);
-      setOpen(true);
-    }
-  };
+  const fetchAlbums = useCallback(
+    async (searchType, searchTerm) => {
+      try {
+        const offset = (searchTerm === '' ? currentPage - 1 : 0) * limit;
+        // console.log(currentPage - 1 + ' * ' + limit + ' = ' + offset);
+        // console.log('searchType:' + searchType + ' ; searchTerm:' + searchTerm);
 
-  //display 10 albums when first user visit this page
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_PATH}/albums/filter`,
+          {
+            params: {
+              limit: limit,
+              [searchType]: searchTerm,
+              offset,
+            },
+          }
+        );
+        const searchResult = response.data.albums;
+        setAlbums(searchResult);
+        if (searchResult.length === 0) {
+          setMessage('No result found');
+        }
+      } catch (error) {
+        console.error('Error fetching albums:', error);
+        setErrorMessage(error.message);
+        setOpen(true);
+      }
+    },
+    [currentPage, limit]
+  );
+
+  //display 12 albums when first user visit this page
   useEffect(() => {
-    fetchAlbums('albumName', '', 10);
-  }, []);
+    fetchAlbums('albumName', '');
+  }, [fetchAlbums, currentPage]); // Refetch albums when the page changes
 
   //fetch wishlist album from API
   useEffect(() => {
@@ -78,27 +89,23 @@ const AlbumsList = () => {
         console.error('Error fetching wishlist:', error);
       }
     };
-
     fetchWishlist();
   }, []);
 
   //call the function to make API request for search input value
   const handleSearch = () => {
-    fetchAlbums(searchType, searchTerm, limit);
+    fetchAlbums(searchType, searchTerm);
   };
 
   //clear search input and make an empty API call
   const handleClear = () => {
     setSearchType('albumName');
     setSearchTerm('');
-    setLimit(1);
     setMessage('');
-    fetchAlbums('albumName', '', 0);
+    fetchAlbums('albumName', '');
   };
-
   // snackbar start
   const [open, setOpen] = React.useState(false);
-
   //close the snackbar
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -106,7 +113,6 @@ const AlbumsList = () => {
     }
     setOpen(false);
   };
-
   const action = (
     <React.Fragment>
       <IconButton
@@ -120,6 +126,9 @@ const AlbumsList = () => {
     </React.Fragment>
   );
   //end of snackbar
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Container>
@@ -170,13 +179,32 @@ const AlbumsList = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={9}>
           {albums.length > 0 ? (
-            <AlbumGrid albums={albums} wishListId={wishListId} />
+            <>
+              <AlbumGrid albums={albums} wishListId={wishListId} />
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  mt: '3rem',
+                  mb: '2rem',
+                }}
+              >
+                <Stack spacing={2}>
+                  <Pagination
+                    count={6} // Replace with the total number of pages (on this moment we have 69 albums / 12 albums per page)
+                    page={currentPage}
+                    color="primary"
+                    onChange={handlePageChange}
+                  />
+                </Stack>
+              </Box>
+            </>
           ) : (
             <Box
               sx={{
                 textAlign: 'center',
-                mt: '20px',
-                mb: '20px',
+                mt: '1.25rem',
+                mb: '1.25rem',
               }}
             >
               {/* no result found message */}
@@ -191,5 +219,4 @@ const AlbumsList = () => {
     </Container>
   );
 };
-
 export default AlbumsList;
