@@ -25,7 +25,7 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
-  console.log(anchorElUser);
+  // console.log(anchorElUser);
 
   const { status } = useAuth();
   const isLoggedIn = status === AuthStatus.LoggedIn;
