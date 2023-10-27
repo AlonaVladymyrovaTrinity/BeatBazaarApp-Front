@@ -48,8 +48,8 @@ const CheckoutPage = () => {
     orderData.total,
   ]);
 
-  console.log('Order data ' + JSON.stringify(orderData));
-  console.log('client secret ' + clientSecret);
+  // console.log('Order data ' + JSON.stringify(orderData));
+  // console.log('client secret ' + clientSecret);
 
   const appearance = {
     theme: 'stripe',

@@ -36,7 +36,7 @@ const CheckoutComplete = () => {
         const response = await axiosInstance.get(`${ordersEndpoint}/${id}`);
         setIsLoading(false);
         setOrderData(response.data?.order);
-        console.log(response.data?.order);
+        // console.log(response.data?.order);
       } catch (error) {
         setIsLoading(false);
         setErrorMessage(
