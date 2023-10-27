@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { usePaymentInputs } from 'react-payment-inputs'; //for handling payment inputs
+//import { usePaymentInputs } from 'react-payment-inputs'; //for handling payment inputs
 import { useRegister } from '@akosasante/react-auth-context';
 import { useNavigate } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
@@ -10,11 +10,11 @@ import {
   Button,
   Container,
   Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  Box,
+  // Radio,
+  // RadioGroup,
+  // FormControlLabel,
+  // FormControl,
+  // Box,
 } from '@mui/material';
 
 const UserRegistration = () => {
@@ -70,7 +70,7 @@ const UserRegistration = () => {
   const handleSignupError = (error) => {
     setSignupError(true);
     errorMessage = error;
-    console.error(error);
+    // console.error(error);
   };
 
   // Used by the useRegister hook to get the user object from the register API response
@@ -102,25 +102,25 @@ const UserRegistration = () => {
   };
 
   //card info input fields
-  const { _meta, getCardNumberProps, getExpiryDateProps, getCVCProps } =
-    usePaymentInputs();
+  // const { _meta, getCardNumberProps, getExpiryDateProps, getCVCProps } =
+  //   usePaymentInputs();
 
   //payment type selection
   // const [selectedOption, setSelectedOption] = useState('paypal'); // Initialize with the default payment option
-  const paymentOptions = [
-    {
-      value: 'paypal',
-      label: 'PayPal',
-    },
-    {
-      value: 'card',
-      label: 'Credit/Debit Card',
-    },
-    {
-      value: 'googlepay',
-      label: 'Google Pay',
-    },
-  ];
+  // const paymentOptions = [
+  //   {
+  //     value: 'paypal',
+  //     label: 'PayPal',
+  //   },
+  //   {
+  //     value: 'card',
+  //     label: 'Credit/Debit Card',
+  //   },
+  //   {
+  //     value: 'googlepay',
+  //     label: 'Google Pay',
+  //   },
+  // ];
 
   return (
     <Container maxWidth="sm" sx={{ mt: 5, mb: 20 }}>
@@ -179,28 +179,28 @@ const UserRegistration = () => {
           variant="outlined"
           required
         />
-        <TextField
+        {/* <TextField
           label="Card Number"
           name="hashedNumber"
           variant="outlined"
           fullWidth
           margin="normal"
           inputProps={getCardNumberProps({})}
-        />
-        <TextField
+        /> */}
+        {/* <TextField
           label="Expiration Date"
           name="expiry"
           variant="outlined"
           margin="normal"
           inputProps={getExpiryDateProps({})}
-        />
-        <TextField
+        /> */}
+        {/* <TextField
           label="CVV"
           variant="outlined"
           margin="normal"
           inputProps={getCVCProps({})}
-        />
-        <FormControl>
+        /> */}
+        {/* <FormControl>
           <RadioGroup
             aria-label="demo-row-radio-buttons-group-label"
             name="preferredPaymentOption"
@@ -219,7 +219,7 @@ const UserRegistration = () => {
               />
             ))}
           </RadioGroup>
-        </FormControl>
+        </FormControl> */}
         <Button
           type="submit"
           variant="contained"
