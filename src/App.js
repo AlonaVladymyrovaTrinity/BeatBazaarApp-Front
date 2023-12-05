@@ -16,6 +16,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import PersonalProfileEditForm from './components/user/PersonalProfileEditForm';
+import PropTypes from 'prop-types';
 
 function App() {
   const { status } = useAuth();
@@ -155,5 +156,9 @@ function App() {
     </ThemeProvider>
   );
 }
+
+App.propTypes = {
+  // some propTypes...
+};
 
 export default App;
