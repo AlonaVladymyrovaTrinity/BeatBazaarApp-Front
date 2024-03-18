@@ -5,17 +5,17 @@ The Music App is a React application where users can stream music, add songs to 
 ## Screenshots
 
 At the start of the app an option to sign up or log in will be presented to the user
-![Signin](images\signin.png)
+![Signin](https://github.com/AlonaVladymyrovaTrinity/BeatBazaarApp-Front/blob/main/images/signin.png)
 
 On the main dashboard, users will be presented with a search bar to look for their favorite songs and add to them to the shopping cart or mark them in wishlist
-![Home](images\homeapp)
+![Home](https://github.com/AlonaVladymyrovaTrinity/BeatBazaarApp-Front/blob/main/images/homeapp.jpg)
 
 ## Technology Stack
 
 this is a React app with use of:
 
 More information about the libraries used for this project
-[DOCS](docs\DOCUMENTATION.md)
+[DOCS](https://github.com/AlonaVladymyrovaTrinity/BeatBazaarApp-Front/blob/main/docs/DOCUMENTATION.md)
 
 Styled-components together with material-ui
 Redux Toolkit for app-wide state management
